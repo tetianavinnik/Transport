@@ -2,6 +2,7 @@ import logging
 import requests
 import time
 from google.transit import gtfs_realtime_pb2
+from google.oauth2.credentials import Credentials
 from google.cloud.sql.connector import Connector
 import sqlalchemy
 
@@ -13,7 +14,8 @@ class TransportService:
            "pymysql",
            user="lvivtransport",
            password="root",
-           db="lvivtransportdb"
+           db="lvivtransportdb",
+           credentials=Credentials.from_authorized_user_file('credentials.json', [])
         )
         pool = sqlalchemy.create_engine(
             "mysql+pymysql://",
