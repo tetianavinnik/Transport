@@ -57,6 +57,7 @@ class TransportService:
         )
 
         for vehicle in vehicles:
+            print(vehicle)
             vehicle = vehicle.vehicle
             self.db_conn.execute(insert_stmt, parameters={
                 "id": vehicle.id,
