@@ -31,7 +31,7 @@ class TransportService:
             license_plate VARCHAR(255),
             latitude FLOAT,
             longitude FLOAT,
-            bearing FLOAT
+            bearing FLOAT,
             speed FLOAT,
             timestamp INT)"""));
         self.db_conn.commit()
