@@ -19,7 +19,7 @@ class TransportService:
             "mysql+pymysql://",
             creator=conn
         )
-        self.db_conn = pool.connect()
+        self.db_conn = pool.connection
         self._create_table()
     
     def _create_table(self):
