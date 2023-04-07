@@ -1,76 +1,87 @@
-# import datetime
 import logging
-
-import azure.functions as func
-
 import requests
-# import gtfs_realtime_pb2_lib
+import time
 from google.transit import gtfs_realtime_pb2
-import pyodbc
+from google.cloud.sql.connector import Connector
+import sqlalchemy
 
 
-def get_vehicles():
-    logging.info('Fetching vehicles')
-    feed = gtfs_realtime_pb2.FeedMessage()
-    response = requests.get('http://track.ua-gis.com/gtfs/lviv/vehicle_position')
-    feed.ParseFromString(response.content)
-    return feed.entity
+class TransportService:
+    def __init__(self) -> None:
+        conn = Connector().connect(
+           "peaceful-impact-382015:us-central1:lvivtransport",
+           "pymysql",
+           user="lvivtransport",
+           password="root",
+           db="lvivtransportdb"
+        )
+        pool = sqlalchemy.create_engine(
+            "mysql+pymysql://",
+            creator=conn
+        )
+        self.db_conn = pool.connect()
+    
+    def _create_table(self):
+        self.db_conn.execute("""CREATE TABLE IF NOT EXIST vehicle_data (
+            id VARCHAR(255) NOT NULL,
+            trip_id VARCHAR(255),
+            route_id VARCHAR(255),
+            vehicle_id VARCHAR(255),
+            license_plate VARCHAR(255),
+            latitude FLOAT,
+            longitude FLOAT,
+            bearing FLOAT
+            speed FLOAT,
+            timestamp INT""");
+        self.db_conn.commit()
+    
+    def _fetch_vehicles(self):
+        logging.info('Fetching vehicles')
+
+        feed = gtfs_realtime_pb2.FeedMessage()
+        response = requests.get('http://track.ua-gis.com/gtfs/lviv/vehicle_position')
+        feed.ParseFromString(response.content)
+        return feed.entity
+    
+    def _upload_vehicles_into_database(self, vehicles):
+        logging.info('Starting upload for %d vehicles', len(vehicles))
+
+        insert_stmt = sqlalchemy.text(
+            """INSERT INTO vehicle_data (id, trip_id, route_id,
+                             vehicle_id, license_plate, latitude, longitude,
+                             bearing, speed, timestamp) VALUES
+                            (:id, :trip_id, :route_id,
+                             :vehicle_id, :license_plate, :latitude, :longitude,
+                             :bearing, :speed, :timestamp)""",
+        )
+
+        for vehicle in vehicles:
+            vehicle = vehicle.vehicle
+            self.db_conn.execute(insert_stmt, parameters={
+                "id": vehicle.id,
+                "trip_id": vehicle.trip.trip_id,
+                "route_id": vehicle.vehicle.trip.route_id,
+                "vehicle_id": vehicle.vehicle.id,
+                "license_plate": vehicle.vehicle.license_plate,
+                "latitude": vehicle.position.latitude,
+                "longitude": vehicle.position.longitude,
+                "bearing": vehicle.position.bearing,
+                "speed": vehicle.position.speed,
+                "timestamp": vehicle.timestamp
+            })
+
+        self.db_conn.commit()
+        
+    def run(self):
+        # while True:
+        self._upload_vehicles_into_database(self._fetch_vehicles())
+            # time.sleep(10)
 
 
-def upload_vehicle_positions_into_database(vehicles):
-    logging.info('Starting upload')
-    cnxn = pyodbc.connect(f"Driver={{ODBC Driver 17 for SQL Server}};Database=lvivtransportserver;Server=tcp:lvivtransportserver.database.windows.net,1433;Initial Catalog=lvivtransportdb;Persist Security Info=False;User ID=codelvivtransport;Password=C0delvivtransport;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
-    cursor = cnxn.cursor()
-    # cursor.execute("BEGIN TRANSACTION;")
-    for vehicle in vehicles:
-        logging.info('Writing vehicle with id=%s', vehicle.vehicle.vehicle.id)
-        cursor.execute(f'INSERT INTO vehicle_data (id,trip_id,route_id,schedule_relationship,vehicle_id,license_plate,latitude,longitude,bearing,odometer,speed,timestamp,congestion_level) VALUES ({vehicle.id}, {vehicle.vehicle.trip.trip_id}, {vehicle.vehicle.trip.route_id}, {vehicle.vehicle.trip.schedule_relationship},\
-                   {vehicle.vehicle.vehicle.id}, {vehicle.vehicle.vehicle.license_plate}, {vehicle.vehicle.position.latitude}, {vehicle.vehicle.position.longitude},\
-                   {vehicle.vehicle.position.bearing}, {vehicle.vehicle.position.odometer}, {vehicle.vehicle.position.speed}, {vehicle.vehicle.timestamp}, {vehicle.vehicle.congestion_level})')
-                     
-        cnxn.commit()
-    # cursor.execute("COMMIT TRANSACTION;")
-    cursor.close()
-    cnxn.close()
-
-def main(mytimer: func.TimerRequest) -> None:
-    upload_vehicle_positions_into_database(get_vehicles())
-    # utc_timestamp = datetime.datetime.utcnow().replace(
-    #     tzinfo=datetime.timezone.utc).isoformat()
-
-    # if mytimer.past_due:
-    #     logging.info('The timer is past due!')
-
-    f = "hdb"
-
-    # feed = gtfs_realtime_pb2.FeedMessage()
-    # response = requests.get('http://track.ua-gis.com/gtfs/lviv/vehicle_position')
-    # feed.ParseFromString(response.content)
-    # f = feed.entity
-
-    # insert_data_from_url_to_sql_database()
-
-    logging.info('Python timer trigger function ran at %s', f[0])
-    # print(f[0].id)
-
-main(111)
+def main() -> None:
+    transport_service = TransportService()
+    transport_service.run()
 
 
-
-# def insert_data_from_url_to_sql_database():
-#     # Retrieve data from URL
-
-#     # Connect to SQL database
-#     # cnxn = pyodbc.connect(f"Server=tcp:lvivtransportserver.database.windows.net,1433;Initial Catalog=lvivtransportdb;Persist Security Info=False;User ID=codelvivtransport;Password=C0delvivtransport;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
-#     # cursor = cnxn.cursor()
-#     # Insert data into SQL database
-#     for marshrutka in f:
-#         logging.info('hello %s', marshrutka.vehicle.vehicle.id)
-#     #     cursor.execute(f'INSERT INTO vehicle_data (id,trip_id,route_id,schedule_relationship,vehicle_id,license_plate,latitude,longitude,bearing,odometer,speed,timestamp,congestion_level) VALUES ({marshrutka.id}, {marshrutka.vehicle.trip.trip_id}, {marshrutka.vehicle.trip.route_id}, {marshrutka.vehicle.trip.schedule_relationship},\
-#     #                {marshrutka.vehicle.vehicle.id}, {marshrutka.vehicle.vehicle.license_plate}, {marshrutka.vehicle.position.latitude}, {marshrutka.vehicle.position.longitude},\
-#     #                {marshrutka.vehicle.position.bearing}, {marshrutka.vehicle.position.odometer}, {marshrutka.vehicle.position.speed}, {marshrutka.vehicle.timestamp}, {marshrutka.vehicle.congestion_level})')
-                     
-#     #     cnxn.commit()
-#     # cursor.close()
-#     # Close the connection
-#     # cnxn.close()
+if __name__ == "__main__":
+    main()
