@@ -62,7 +62,7 @@ class TransportService:
             self.db_conn.execute(insert_stmt, parameters={
                 "id": id,
                 "trip_id": vehicle.trip.trip_id,
-                "route_id": vehicle.vehicle.trip.route_id,
+                "route_id": vehicle.trip.route_id,
                 "vehicle_id": vehicle.vehicle.id,
                 "license_plate": vehicle.vehicle.license_plate,
                 "latitude": vehicle.position.latitude,
