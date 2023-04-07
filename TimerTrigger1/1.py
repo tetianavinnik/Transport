@@ -17,9 +17,9 @@ class TransportService:
         )
         pool = sqlalchemy.create_engine(
             "mysql+pymysql://",
-            creator=conn
+            creator=lambda: conn
         )
-        self.db_conn = pool.connection
+        self.db_conn = pool.connect()
         self._create_table()
     
     def _create_table(self):
