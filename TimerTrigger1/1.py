@@ -35,7 +35,7 @@ def main(mytimer: func.TimerRequest) -> None:
     logging.info('Python timer trigger function ran at %s', f[0])
     # print(f[0].id)
 
-# main(111)
+main(111)
 
 
 
