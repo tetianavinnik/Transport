@@ -57,10 +57,10 @@ class TransportService:
         )
 
         for vehicle in vehicles:
-            print(vehicle)
+            id = vehicle.id
             vehicle = vehicle.vehicle
             self.db_conn.execute(insert_stmt, parameters={
-                "id": vehicle.id,
+                "id": id,
                 "trip_id": vehicle.trip.trip_id,
                 "route_id": vehicle.vehicle.trip.route_id,
                 "vehicle_id": vehicle.vehicle.id,
