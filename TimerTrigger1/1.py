@@ -19,7 +19,7 @@ def get_vehicles():
 
 def upload_vehicle_positions_into_database(vehicles):
     logging.info('Starting upload')
-    cnxn = pyodbc.connect(f"Server=tcp:lvivtransportserver.database.windows.net,1433;Initial Catalog=lvivtransportdb;Persist Security Info=False;User ID=codelvivtransport;Password=C0delvivtransport;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
+    cnxn = pyodbc.connect(f"Driver={{ODBC Driver 17 for SQL Server}};Database=lvivtransportserver;Server=tcp:lvivtransportserver.database.windows.net,1433;Initial Catalog=lvivtransportdb;Persist Security Info=False;User ID=codelvivtransport;Password=C0delvivtransport;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
     cursor = cnxn.cursor()
     # cursor.execute("BEGIN TRANSACTION;")
     for vehicle in vehicles:
