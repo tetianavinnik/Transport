@@ -8,7 +8,15 @@ import requests
 from google.transit import gtfs_realtime_pb2
 
 
+def get_vehicles_position():
+    feed = gtfs_realtime_pb2.FeedMessage()
+    response = requests.get('http://track.ua-gis.com/gtfs/lviv/vehicle_position')
+    feed.ParseFromString(response.content)
+    return feed.entity
+
+
 def main(mytimer: func.TimerRequest) -> None:
+    print(get_vehicles_position())
     # utc_timestamp = datetime.datetime.utcnow().replace(
     #     tzinfo=datetime.timezone.utc).isoformat()
 
@@ -33,10 +41,6 @@ def main(mytimer: func.TimerRequest) -> None:
 
 # def insert_data_from_url_to_sql_database():
 #     # Retrieve data from URL
-#     feed = gtfs_realtime_pb2.FeedMessage()
-#     response = requests.get('http://track.ua-gis.com/gtfs/lviv/vehicle_position')
-#     feed.ParseFromString(response.content)
-#     f = feed.entity
 
 #     # Connect to SQL database
 #     # cnxn = pyodbc.connect(f"Server=tcp:lvivtransportserver.database.windows.net,1433;Initial Catalog=lvivtransportdb;Persist Security Info=False;User ID=codelvivtransport;Password=C0delvivtransport;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
