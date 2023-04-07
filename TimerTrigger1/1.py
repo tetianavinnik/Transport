@@ -20,6 +20,7 @@ class TransportService:
             creator=conn
         )
         self.db_conn = pool.connect()
+        self._create_table()
     
     def _create_table(self):
         self.db_conn.execute("""CREATE TABLE IF NOT EXIST vehicle_data (
