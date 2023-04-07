@@ -23,7 +23,7 @@ class TransportService:
         self._create_table()
     
     def _create_table(self):
-        self.db_conn.execute("""CREATE TABLE IF NOT EXIST vehicle_data (
+        self.db_conn.execute(sqlalchemy.text("""CREATE TABLE IF NOT EXIST vehicle_data (
             id VARCHAR(255) NOT NULL,
             trip_id VARCHAR(255),
             route_id VARCHAR(255),
@@ -33,7 +33,7 @@ class TransportService:
             longitude FLOAT,
             bearing FLOAT
             speed FLOAT,
-            timestamp INT""");
+            timestamp INT"""));
         self.db_conn.commit()
     
     def _fetch_vehicles(self):
