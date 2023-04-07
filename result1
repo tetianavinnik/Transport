@@ -1,0 +1,147 @@
+id: "1902321"
+vehicle {
+  trip {
+    trip_id: "22555_4_0"
+    route_id: "903"
+    schedule_relationship: SCHEDULED
+  }
+  vehicle {
+    id: "5374"
+    license_plate: "1221"
+  }
+  position {
+    latitude: 49.8340302
+    longitude: 24.0343323
+    bearing: 189
+    odometer: 33619.90996762221
+    speed: 0
+  }
+  timestamp: 1678177228
+  congestion_level: UNKNOWN_CONGESTION_LEVEL
+}
+id: "1902321"
+vehicle {
+  trip {
+    trip_id: "22555_4_0"
+    route_id: "903"
+    schedule_relationship: SCHEDULED
+  }
+  vehicle {
+    id: "5374"
+    license_plate: "1221"
+  }
+  position {
+    latitude: 49.8340302
+    longitude: 24.0343323
+    bearing: 189
+    odometer: 33619.90996762221
+    speed: 0
+  }
+  timestamp: 1678177228
+  congestion_level: UNKNOWN_CONGESTION_LEVEL
+}
+id: "1902321"
+vehicle {
+  trip {
+    trip_id: "22555_4_0"
+    route_id: "903"
+    schedule_relationship: SCHEDULED
+  }
+  vehicle {
+    id: "5374"
+    license_plate: "1221"
+  }
+  position {
+    latitude: 49.8340302
+    longitude: 24.0343323
+    bearing: 189
+    odometer: 33619.90996762221
+    speed: 0
+  }
+  timestamp: 1678177239
+  congestion_level: UNKNOWN_CONGESTION_LEVEL
+}
+id: "1902321"
+vehicle {
+  trip {
+    trip_id: "22555_4_0"
+    route_id: "903"
+    schedule_relationship: SCHEDULED
+  }
+  vehicle {
+    id: "5374"
+    license_plate: "1221"
+  }
+  position {
+    latitude: 49.8340302
+    longitude: 24.0343323
+    bearing: 189
+    odometer: 33619.90996762221
+    speed: 0
+  }
+  timestamp: 1678177239
+  congestion_level: UNKNOWN_CONGESTION_LEVEL
+}
+id: "1902321"
+vehicle {
+  trip {
+    trip_id: "22555_4_0"
+    route_id: "903"
+    schedule_relationship: SCHEDULED
+  }
+  vehicle {
+    id: "5374"
+    license_plate: "1221"
+  }
+  position {
+    latitude: 49.8340302
+    longitude: 24.0343323
+    bearing: 189
+    odometer: 33619.90996762221
+    speed: 0
+  }
+  timestamp: 1678177249
+  congestion_level: UNKNOWN_CONGESTION_LEVEL
+}
+id: "1902321"
+vehicle {
+  trip {
+    trip_id: "22555_4_0"
+    route_id: "903"
+    schedule_relationship: SCHEDULED
+  }
+  vehicle {
+    id: "5374"
+    license_plate: "1221"
+  }
+  position {
+    latitude: 49.8340302
+    longitude: 24.0343323
+    bearing: 189
+    odometer: 33619.90996762221
+    speed: 0
+  }
+  timestamp: 1678177249
+  congestion_level: UNKNOWN_CONGESTION_LEVEL
+}
+id: "1902321"
+vehicle {
+  trip {
+    trip_id: "22555_4_0"
+    route_id: "903"
+    schedule_relationship: SCHEDULED
+  }
+  vehicle {
+    id: "5374"
+    license_plate: "1221"
+  }
+  position {
+    latitude: 49.8332329
+    longitude: 24.0340691
+    bearing: 190
+    odometer: 33620.000940187434
+    speed: 5
+  }
+  timestamp: 1678177264
+  congestion_level: UNKNOWN_CONGESTION_LEVEL
+}
