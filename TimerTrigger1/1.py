@@ -34,7 +34,7 @@ def upload_vehicle_positions_into_database(vehicles):
     cnxn.close()
 
 def main(mytimer: func.TimerRequest) -> None:
-    upload_vehicle_positions_into_database(get_vehicles_position())
+    upload_vehicle_positions_into_database(get_vehicles())
     # utc_timestamp = datetime.datetime.utcnow().replace(
     #     tzinfo=datetime.timezone.utc).isoformat()
 
