@@ -33,7 +33,7 @@ class TransportService:
             longitude FLOAT,
             bearing FLOAT
             speed FLOAT,
-            timestamp INT"""));
+            timestamp INT)"""));
         self.db_conn.commit()
     
     def _fetch_vehicles(self):
