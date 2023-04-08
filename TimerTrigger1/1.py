@@ -75,9 +75,11 @@ class TransportService:
         self.db_conn.commit()
         
     def run(self):
-        # while True:
-        self._upload_vehicles_into_database(self._fetch_vehicles())
-            # time.sleep(10)
+        n=0
+        while n<=2160:
+            self._upload_vehicles_into_database(self._fetch_vehicles())
+            n+=1
+            time.sleep(2)
 
 
 def main() -> None:
