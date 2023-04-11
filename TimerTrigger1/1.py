@@ -76,10 +76,17 @@ class TransportService:
         
     def run(self):
         n=0
-        while n<=2160:
+        while n<=2:
+            start = time.time()
             self._upload_vehicles_into_database(self._fetch_vehicles())
+            diff = start - time.time()
+            print(diff)
             n+=1
-            time.sleep(2)
+            if 10 - diff > 0:
+                sleep = 10 - diff
+            else:
+                sleep = 0
+            time.sleep(sleep)
 
 
 def main() -> None:
