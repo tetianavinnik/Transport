@@ -76,7 +76,7 @@ class TransportService:
         
     def run(self):
         n=0
-        while n<=2:
+        while n<=200:
             start = time.time()
             self._upload_vehicles_into_database(self._fetch_vehicles())
             diff = start - time.time()
